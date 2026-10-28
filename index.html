@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a1022">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Nova PSP">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<title>Nova PSP</title>
+<style>
+:root{color-scheme:dark;--bg:#0a1022;--card:rgba(10,16,38,.72);--line:rgba(255,255,255,.1);--tx:#f1f4fb;--mu:#98a3bf;--ac:#5b9dff;--ok:#5fc59a;--er:#f08a8a}
+*{box-sizing:border-box}html,body{margin:0}
+body{font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--tx);min-height:100dvh;background:radial-gradient(900px 520px at 78% -8%,#2d4fa8aa,transparent),radial-gradient(700px 500px at 0% 100%,#1b2a66aa,transparent),linear-gradient(#0a1022,#0c1530);padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+button,select,input{font:inherit;color:var(--tx)}
+button{background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:10px;padding:9px 14px;font-weight:600;cursor:pointer}
+button:hover:not(:disabled){background:rgba(255,255,255,.14)}button:disabled{opacity:.4}
+button.pri{background:var(--ac);border-color:var(--ac);color:#06101f}
+:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.wrap{max-width:1000px;margin:0 auto;padding:12px 16px 28px}
+.top{display:flex;align-items:center;gap:18px}
+.tabs{display:flex;gap:4px;flex:1}
+.tabs button{background:none;border:0;border-bottom:2px solid transparent;border-radius:0;padding:8px 10px;color:var(--mu);font-size:17px}
+.tabs button[aria-selected=true]{color:#fff;border-color:#fff}
+.sys{display:flex;align-items:center;gap:12px;color:var(--mu);font-size:14px;white-space:nowrap}
+.mark{width:26px;height:26px;border-radius:7px;background:var(--ac);color:#06101f;display:grid;place-items:center;font-weight:800}
+.row{display:flex;gap:14px;overflow-x:auto;padding:30px 4px 8px;align-items:flex-end;scrollbar-width:none}
+.tw{flex:none;text-align:left;background:none;border:0;padding:0;width:112px}
+.tw .t{width:112px;height:112px;border-radius:16px;background:linear-gradient(145deg,#243568,#16214a);display:grid;place-items:center;font-size:34px;border:1px solid var(--line)}
+.tw.sel{width:150px}.tw.sel .t{width:150px;height:150px;font-size:46px;background:linear-gradient(145deg,#3b66d6,#1f3a8a);box-shadow:0 0 0 3px #fff3,0 14px 34px #0008}
+.tw span{display:block;margin-top:8px;font-size:13px;color:var(--mu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tw.sel span{color:#fff;font-size:15px;font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;backdrop-filter:blur(8px)}
+.card h3{margin:0 0 8px;font-size:14px;display:flex;justify-content:space-between;gap:8px;font-weight:600}
+.card p,.card li{margin:4px 0;font-size:13px;color:var(--mu)}.card ul{list-style:none;margin:0;padding:0}
+.ok{color:var(--ok)}.er{color:var(--er)}
+.bar{height:4px;background:var(--line);border-radius:3px;overflow:hidden;margin:8px 0}.bar i{display:block;height:100%;width:0;background:var(--ac);transition:width .2s}
+.msg{margin:16px 2px 0;color:var(--mu);font-size:13px;min-height:20px}.msg.er{color:var(--er)}
+.hide{display:none!important}
+.pad{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px;margin-top:10px}
+.pad div{border:1px solid var(--line);border-radius:10px;text-align:center;padding:10px 4px;font-size:15px;color:var(--mu)}
+.pad div.on{background:var(--ac);color:#06101f;border-color:var(--ac)}
+.ax{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center;font-size:13px;color:var(--mu)}
+.ax .bar{margin:0;position:relative}.ax .bar i{position:absolute;width:10px;border-radius:5px;transition:none}
+.set{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}.set:last-child{border:0}
+.set select{background:#16214a;border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+#player{position:fixed;inset:0;z-index:20;background:#000;display:flex;flex-direction:column;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+.pb{display:flex;gap:8px;align-items:center;padding:6px 10px;background:#0a1022}.pb b{flex:1;font-size:13px;color:var(--mu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pb button{padding:6px 10px}
+#game{position:relative;flex:1;min-height:0}#pmsg{position:absolute;inset:auto 12px 12px;color:#cfd5e2;font-size:12px;pointer-events:none;z-index:5;text-shadow:0 1px 4px #000}
+@media(max-width:560px){.sys .clk{display:none}.tabs button{font-size:15px;padding:8px 7px}}
+@media(prefers-reduced-motion:reduce){.bar i{transition:none}}
+
+/* ===== Liquid Glass ===== */
+body{background:#060a18}
+.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:#060a18}
+.bg i{position:absolute;border-radius:50%;filter:blur(64px);will-change:transform;opacity:.8}
+.o1{width:62vmax;height:62vmax;left:-18vmax;top:-22vmax;background:#2b66ff;animation:d1 24s ease-in-out infinite alternate}
+.o2{width:52vmax;height:52vmax;right:-18vmax;top:8vmax;background:#8b3dff;animation:d2 30s ease-in-out infinite alternate}
+.o3{width:46vmax;height:46vmax;left:6vmax;bottom:-22vmax;background:#00bfd6;animation:d3 27s ease-in-out infinite alternate}
+.o4{width:30vmax;height:30vmax;right:6vmax;bottom:-8vmax;background:#ff3d8b;opacity:.45;animation:d1 34s ease-in-out infinite alternate-reverse}
+@keyframes d1{to{transform:translate3d(14vmax,10vmax,0) scale(1.15)}}
+@keyframes d2{to{transform:translate3d(-16vmax,12vmax,0) scale(.9)}}
+@keyframes d3{to{transform:translate3d(18vmax,-12vmax,0) scale(1.2)}}
+.ic{width:1.15em;height:1.15em;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none;vertical-align:-.2em}
+.glass,.card,.tw .t,.tabs,button{background:linear-gradient(155deg,rgba(255,255,255,.2),rgba(255,255,255,.06) 55%,rgba(255,255,255,.12));-webkit-backdrop-filter:blur(22px) saturate(190%);backdrop-filter:blur(22px) saturate(190%);border:1px solid rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -1px 0 rgba(255,255,255,.08),inset 0 0 22px rgba(255,255,255,.05),0 12px 36px rgba(2,6,25,.45)}
+.card{border-radius:24px;position:relative;overflow:hidden}
+.card::before,.tw .t::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(120% 60% at 20% -10%,rgba(255,255,255,.28),transparent 55%);pointer-events:none}
+.card>*{position:relative}
+.top{margin:4px 0 6px}
+.tabs{flex:none;gap:2px;padding:4px;border-radius:999px}
+.tabs button{display:flex;align-items:center;gap:7px;border:0;border-radius:999px;padding:8px 14px;font-size:15px;color:#c3cce6;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.tabs button[aria-selected=true]{color:#fff;background:linear-gradient(160deg,rgba(255,255,255,.36),rgba(255,255,255,.14));box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 4px 14px rgba(0,0,0,.3)}
+.top{justify-content:space-between}
+.mark{display:none}
+.sys{padding:8px 14px;border-radius:999px;color:#e8eeff}.sys .ic{width:1.3em;height:1.3em}.sys.on{color:#7dffc3}
+.tw{box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.tw .t{position:relative;border-radius:30px;font-size:0;color:#fff}
+.tw .t .ic{width:44%;height:44%;stroke-width:1.5;filter:drop-shadow(0 2px 8px rgba(0,0,0,.35))}
+.tw.sel .t{box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 0 30px rgba(120,170,255,.35),0 0 0 1px rgba(255,255,255,.35),0 18px 50px rgba(43,102,255,.55);background:linear-gradient(155deg,rgba(120,170,255,.55),rgba(90,70,255,.22) 60%,rgba(255,255,255,.14))}
+.tw:nth-child(2) .t{background:linear-gradient(155deg,rgba(0,220,220,.4),rgba(255,255,255,.07))}
+.tw:nth-child(3) .t{background:linear-gradient(155deg,rgba(255,90,160,.4),rgba(255,255,255,.07))}
+.tw span{color:#cdd6ef}.tw.sel span{color:#fff}
+button{border-radius:14px;color:#fff}
+button.pri{background:linear-gradient(160deg,rgba(130,180,255,.9),rgba(60,110,255,.75));border-color:rgba(255,255,255,.45)}
+.card h3 .hl{display:flex;align-items:center;gap:8px}
+.card h3{align-items:center}.card h3 .ic{color:#a9c4ff;width:1.3em;height:1.3em}
+.card p,.card li{color:#b8c3e0}.card li{display:flex;align-items:center;gap:8px}
+.card li .ic{width:1.1em;height:1.1em;stroke-width:2.4}
+.pad div{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.16)}
+.set select{background:rgba(255,255,255,.1)}
+#player .pb{background:rgba(6,10,24,.55);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+@media(max-width:560px){.tabs button{padding:8px 11px;font-size:14px}.tabs .ic{display:none}.tabs button[aria-selected=true] .ic{display:block}}
+@media(prefers-reduced-motion:reduce){.bg i{animation:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/></symbol>
+<symbol id="i-pad" viewBox="0 0 24 24"><path d="M6 11h4M8 9v4M15 12h.01M18 10h.01"/><path d="M17.32 5H6.68a4 4 0 0 0-3.98 3.59C2.6 9.42 2 14.46 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.41-1.41A2 2 0 0 1 9.83 16h4.34a2 2 0 0 1 1.42.59L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.55-.6-6.58-.69-7.26A4 4 0 0 0 17.32 5z"/></symbol>
+<symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-cpu" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="3"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M19 9h3M19 15h3M2 9h3M2 15h3"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-disk" viewBox="0 0 24 24"><path d="M22 12H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><path d="M6 16h.01M10 16h.01"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+</defs></svg>
+<div class="bg" aria-hidden="true"><i class="o1"></i><i class="o2"></i><i class="o3"></i><i class="o4"></i></div>
+<div class="wrap">
+  <header class="top">
+        <nav class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-t="home"><svg class="ic"><use href="#i-grid"/></svg>Jeux</button>
+      <button role="tab" aria-selected="false" data-t="pad"><svg class="ic"><use href="#i-pad"/></svg>Manette</button>
+      <button role="tab" aria-selected="false" data-t="set"><svg class="ic"><use href="#i-sliders"/></svg>Réglages</button>
+    </nav>
+    <div class="sys glass"><span id="gp-ico" title="Manette"><svg class="ic"><use href="#i-pad"/></svg></span><span class="clk" id="clk"></span></div>
+  </header>
+
+  <main>
+    <section id="t-home">
+      <div class="row">
+        <button class="tw sel" id="tile-load"><div class="t"><svg class="ic"><use href="#i-plus"/></svg></div><span id="tile-name">Charger un jeu</span></button>
+        <button class="tw" data-go="pad"><div class="t"><svg class="ic"><use href="#i-pad"/></svg></div><span>Manette</span></button>
+        <button class="tw" data-go="set"><div class="t"><svg class="ic"><use href="#i-sliders"/></svg></div><span>Réglages</span></button>
+      </div>
+      <p class="msg" id="msg">Choisis un fichier .iso, .cso ou .pbp (1 Go maximum conseillé).</p>
+      <div class="grid">
+        <div class="card"><h3><span class="hl"><svg class="ic"><use href="#i-cpu"/></svg>Moteur</span> <span id="eng-badge" class="er">à télécharger</span></h3>
+          <div class="bar"><i id="eng-bar"></i></div><p id="eng-txt">Vérification…</p>
+          <button id="eng-btn" class="pri">Télécharger le moteur</button></div>
+        <div class="card"><h3><span class="hl"><svg class="ic"><use href="#i-shield"/></svg>Compatibilité</span></h3><ul id="diag"></ul></div>
+        <div class="card"><h3><span class="hl"><svg class="ic"><use href="#i-disk"/></svg>Stockage</span></h3><p id="sto">Calcul…</p><button id="persist">Protéger contre l’effacement</button></div>
+        <div class="card"><h3><span class="hl"><svg class="ic"><use href="#i-pad"/></svg>Manette</span> <span id="gp-badge">aucune</span></h3><p id="gp-name">Branche ou connecte une manette puis appuie sur un bouton.</p></div>
+      </div>
+    </section>
+
+    <section id="t-pad" class="hide">
+      <div class="grid" style="margin-top:14px">
+        <div class="card"><h3>Boutons <span id="pad-name" class="mu">aucune manette</span></h3><div class="pad" id="pad"></div></div>
+        <div class="card"><h3>Sticks et gâchettes</h3><div class="ax" id="ax"></div>
+          <p style="margin-top:12px"><button id="rumble">Tester les vibrations</button></p><p id="rumble-txt"></p></div>
+      </div>
+    </section>
+
+    <section id="t-set" class="hide">
+      <div class="card" style="margin-top:14px">
+        <div class="set">Résolution interne<select data-k="res"><option>480x272</option><option>960x544</option><option>1440x816</option></select></div>
+        <div class="set">Saut d’images<select data-k="skip"><option>0</option><option>1</option><option>2</option><option>3</option></select></div>
+        <div class="set">Cœur processeur<select data-k="cpu"><option value="jit">JIT (rapide)</option><option value="IR jit">IR JIT</option><option value="interpreter">Interpréteur</option></select></div>
+        <div class="set">Mise à l’échelle des textures<select data-k="tex"><option>1</option><option>2</option><option>3</option></select></div>
+        <div class="set">Volume<input type="range" min="0" max="100" data-k="vol"></div>
+        <div class="set">Télécharger le moteur automatiquement<input type="checkbox" data-k="auto"></div>
+        <div class="set">Moteur en cache<button id="eng-reset">Supprimer et retélécharger</button></div>
+      </div>
+      <p class="msg">Les réglages s’appliquent au prochain lancement d’un jeu. Les commandes tactiles et les touches se règlent dans le menu du moteur, pendant la partie.</p>
+    </section>
+  </main>
+  <input id="file" type="file" accept=".iso,.cso,.pbp,application/octet-stream" hidden>
+</div>
+
+<div id="player" class="hide">
+  <div class="pb"><button id="back">‹ Retour</button><b id="pname"></b><button id="restart">Redémarrer</button><button id="fs">Plein écran</button></div>
+  <div id="game"><div id="pmsg"></div></div>
+</div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id), qa = s => [...document.querySelectorAll(s)];
+  const UP = 'https://cdn.emulatorjs.org/stable/data/', BASE = 'engine/', CORE = 'cores/ppsspp-thread-wasm.data';
+  const REQ = ['loader.js', 'emulator.min.js', 'emulator.min.css', CORE];
+  const OPT = ['version.json', 'cores/reports/ppsspp.json', 'compression/extract7z.js', 'compression/extractzip.js', 'compression/libunrar.js', 'compression/libunrar.wasm'];
+  const MAX = 1024 * 1024 * 1024, EC = 'nova-psp-engine';
+  let S = { res: '480x272', skip: '0', cpu: 'jit', tex: '1', vol: 80, auto: true };
+  try { Object.assign(S, JSON.parse(localStorage.getItem('nova.s') || '{}')); } catch (_) {}
+  const save = () => { try { localStorage.setItem('nova.s', JSON.stringify(S)); } catch (_) {} };
+  let file = null, url = null, script = null, started = false, dlp = null, gpi = -1;
+  const mo = b => (b / 1048576).toFixed(0) + ' Mo';
+  const say = (t, err) => { const m = $('msg'); m.textContent = t; m.classList.toggle('er', !!err); $('pmsg').textContent = t; };
+
+  /* onglets */
+  function tab(n) {
+    qa('[data-t]').forEach(b => b.setAttribute('aria-selected', b.dataset.t === n));
+    ['home', 'pad', 'set'].forEach(k => $('t-' + k).classList.toggle('hide', k !== n));
+    if (n === 'pad') loop();
+  }
+  qa('[data-t]').forEach(b => b.onclick = () => tab(b.dataset.t));
+  qa('[data-go]').forEach(b => b.onclick = () => tab(b.dataset.go));
+  const clock = () => $('clk').textContent = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  clock(); setInterval(clock, 30000);
+
+  /* réglages */
+  qa('[data-k]').forEach(el => {
+    const k = el.dataset.k;
+    if (el.type === 'checkbox') el.checked = !!S[k]; else el.value = S[k];
+    el.onchange = el.oninput = () => { S[k] = el.type === 'checkbox' ? el.checked : el.type === 'range' ? +el.value : el.value; save(); };
+  });
+
+  /* diagnostic */
+  function diag() {
+    const ua = navigator.userAgent, ios = /iPhone|iPad|iPod/.test(ua), saf = ios || (/Safari/.test(ua) && !/Chrome|Chromium|Edg|Android/.test(ua));
+    const gl2 = !!document.createElement('canvas').getContext('webgl2');
+    const L = [[window.crossOriginIsolated, 'Isolation (threads)', 'inactive, recharge la page'], [typeof SharedArrayBuffer === 'function', 'SharedArrayBuffer', 'absent'], [gl2, 'WebGL2', 'absent'], [!saf, 'Navigateur', 'Safari/iPhone : le moteur PSP est signalé non pris en charge']];
+    $('diag').innerHTML = L.map(([ok, a, b]) => `<li>${ok ? '<svg class="ic ok"><use href="#i-check"/></svg>' + a : '<svg class="ic er"><use href="#i-x"/></svg><span>' + a + ' : ' + b + '</span>'}</li>`).join('');
+  }
+
+  /* moteur */
+  async function has() { try { const c = await caches.open(EC); return (await Promise.all(REQ.map(f => c.match(UP + f)))).every(Boolean); } catch (_) { return false; } }
+  async function engState() {
+    const ok = await has();
+    $('eng-badge').textContent = ok ? 'prêt hors ligne' : 'à télécharger'; $('eng-badge').className = ok ? 'ok' : 'er';
+    if (ok) { $('eng-txt').textContent = 'Le moteur est en cache.'; $('eng-bar').style.width = '100%'; }
+    $('eng-btn').classList.toggle('hide', ok);
+    return ok;
+  }
+  function download() {
+    if (dlp) return dlp;
+    dlp = (async () => {
+      $('eng-btn').disabled = true;
+      let bytes = 0;
+      const get = async (f, must) => {
+        for (let t = 0; t < 3; t++) {
+          try {
+            const r = await fetch(BASE + f);
+            if (!r.ok) { if (r.status === 404 && !must) return; throw new Error(f + ' (' + r.status + ')'); }
+            const rd = r.body.getReader();
+            for (;;) { const x = await rd.read(); if (x.done) break; bytes += x.value.length; $('eng-txt').textContent = 'Téléchargement : ' + mo(bytes) + ' (' + f.split('/').pop() + ')'; $('eng-bar').style.width = Math.min(95, 5 + bytes / 1048576) + '%'; }
+            return;
+          } catch (e) { if (t === 2) { if (must) throw e; return; } await new Promise(s => setTimeout(s, 900 * (t + 1))); }
+        }
+      };
+      try {
+        if (!navigator.serviceWorker || !navigator.serviceWorker.controller) throw new Error('Service worker inactif : ouvre l’appli en HTTPS (GitHub Pages) puis recharge.');
+        for (const f of REQ) await get(f, true);
+        for (const f of OPT) await get(f, false);
+        for (let i = 0; i < 20 && !(await has()); i++) await new Promise(s => setTimeout(s, 300));
+        if (!(await has())) throw new Error('Mise en cache incomplète.');
+        if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+        say('Moteur téléchargé. Tu peux charger un jeu.');
+      } catch (e) {
+        $('eng-txt').textContent = 'Échec : ' + e.message; $('eng-bar').style.width = '0';
+        say('Téléchargement du moteur impossible (' + e.message + '). Vérifie la connexion puis appuie sur Réessayer.', true);
+        $('eng-btn').textContent = 'Réessayer'; throw e;
+      } finally { $('eng-btn').disabled = false; dlp = null; engState(); storage(); }
+    })();
+    return dlp;
+  }
+  $('eng-btn').onclick = () => download().catch(() => {});
+  $('eng-reset').onclick = async () => { await caches.delete(EC); await engState(); say('Moteur supprimé. Retéléchargement…'); download().catch(() => {}); };
+
+  async function storage() {
+    try { const e = await navigator.storage.estimate(); $('sto').textContent = mo(e.usage || 0) + ' utilisés sur ' + (e.quota / 1073741824).toFixed(1) + ' Go disponibles'; }
+    catch (_) { $('sto').textContent = 'Information indisponible.'; }
+  }
+  $('persist').onclick = async () => { try { say((await navigator.storage.persist()) ? 'Stockage protégé.' : 'Le navigateur n’a pas accordé la protection.'); } catch (_) { say('Protection indisponible.', true); } };
+
+  /* lancement du jeu */
+  function reset() {
+    try { window.EJS_emulator && window.EJS_emulator.pause && window.EJS_emulator.pause(); } catch (_) {}
+    if (script) { script.remove(); script = null; }
+    if (url) { URL.revokeObjectURL(url); url = null; }
+    const g = $('game'); [...g.children].forEach(c => c.id !== 'pmsg' && c.remove());
+    Object.keys(window).filter(k => k.startsWith('EJS_')).forEach(k => { try { delete window[k]; } catch (_) {} });
+    started = false;
+  }
+  function stop() { reset(); $('player').classList.add('hide'); say('Jeu arrêté.'); }
+
+  async function launch(f) {
+    const ext = (f.name.match(/\.[^.]+$/) || [''])[0].toLowerCase();
+    if (!['.iso', '.cso', '.pbp'].includes(ext)) return say('Format non pris en charge. Choisis un fichier .iso, .cso ou .pbp.', true);
+    if (f.size < 1048576) return say('Ce fichier est trop petit pour un jeu PSP.', true);
+    if (f.size > MAX && !confirm('Ce fichier dépasse 1 Go (' + mo(f.size) + '). Le téléphone risque de manquer de mémoire. Continuer ?')) return;
+    if (!window.crossOriginIsolated) return say('Isolation inactive : le moteur PSP ne peut pas démarrer. Recharge la page (HTTPS requis) ; sur iPhone/Safari ce moteur peut rester incompatible.', true);
+    file = f; try { localStorage.setItem('nova.last', f.name); } catch (_) {}
+    $('tile-name').textContent = f.name.replace(/\.[^.]+$/, '');
+    try { if (!(await has())) { say('Téléchargement du moteur…'); await download(); } } catch (_) { return; }
+    reset();
+    $('player').classList.remove('hide'); $('pname').textContent = f.name + ' · ' + mo(f.size);
+    say('Démarrage du jeu…');
+    url = URL.createObjectURL(f);
+    Object.assign(window, {
+      EJS_player: '#game', EJS_core: 'psp', EJS_gameUrl: url, EJS_gameName: f.name.replace(/\.[^.]+$/, ''),
+      EJS_pathtodata: new URL(BASE, location.href).href, EJS_threads: true, EJS_startOnLoaded: true, EJS_language: 'fr',
+      EJS_volume: S.vol / 100, EJS_color: '#5b9dff',
+      EJS_defaultOptions: { ppsspp_internal_resolution: S.res, ppsspp_frameskip: S.skip, ppsspp_cpu_core: S.cpu, ppsspp_texture_scaling_level: S.tex },
+      EJS_onGameStart: () => { started = true; $('pmsg').textContent = ''; },
+      EJS_onGameStop: () => say('Le moteur a arrêté le jeu.', true)
+    });
+    script = document.createElement('script'); script.async = true; script.src = BASE + 'loader.js';
+    script.onerror = () => { say('Moteur introuvable. Retourne à l’accueil et retélécharge-le.', true); };
+    document.head.appendChild(script);
+    setTimeout(() => { if (!started && !$('player').classList.contains('hide')) say('Le démarrage est long. Si rien ne s’affiche, retourne à l’accueil, ferme les autres applications et relance.', true); }, 120000);
+  }
+  const pick = () => $('file').click();
+  $('tile-load').onclick = pick;
+  $('file').onchange = e => { const f = e.target.files[0]; if (f) launch(f); e.target.value = ''; };
+  $('back').onclick = stop;
+  $('restart').onclick = () => file && launch(file);
+  $('fs').onclick = async () => { try { document.fullscreenElement ? await document.exitFullscreen() : await $('player').requestFullscreen(); } catch (_) { say('Plein écran indisponible ici : ajoute l’appli à l’écran d’accueil.', true); } };
+  addEventListener('beforeunload', () => url && URL.revokeObjectURL(url));
+
+  /* manette */
+  const BT = ['✕', '○', '□', '△', 'L1', 'R1', 'L2', 'R2', 'Select', 'Start', 'L3', 'R3', '↑', '↓', '←', '→', 'Home'];
+  $('pad').innerHTML = BT.map(b => `<div>${b}</div>`).join('');
+  $('ax').innerHTML = ['Stick G ←→', 'Stick G ↑↓', 'Stick D ←→', 'Stick D ↑↓'].map(a => `<span>${a}</span><div class="bar"><i></i></div>`).join('');
+  const gp = () => [...(navigator.getGamepads ? navigator.getGamepads() : [])].find(Boolean);
+  function gpInfo() {
+    const g = gp(); $('gp-badge').textContent = g ? 'connectée' : 'aucune'; $('gp-badge').className = g ? 'ok' : ''; $('gp-ico').parentNode.classList.toggle('on', !!g);
+    $('gp-name').textContent = g ? g.id.slice(0, 70) : 'Branche ou connecte une manette puis appuie sur un bouton.';
+    $('pad-name').textContent = g ? 'connectée' : 'aucune manette';
+  }
+  addEventListener('gamepadconnected', gpInfo); addEventListener('gamepaddisconnected', gpInfo);
+  function loop() {
+    if ($('t-pad').classList.contains('hide')) return;
+    const g = gp();
+    if (g) {
+      [...$('pad').children].forEach((d, i) => d.classList.toggle('on', !!(g.buttons[i] && g.buttons[i].pressed)));
+      [...$('ax').querySelectorAll('i')].forEach((el, i) => { const v = g.axes[i] || 0; el.style.left = (50 + v * 45 - 3) + '%'; });
+    }
+    requestAnimationFrame(loop);
+  }
+  $('rumble').onclick = async () => {
+    const g = gp(), a = g && g.vibrationActuator;
+    if (!g) return $('rumble-txt').textContent = 'Aucune manette détectée.';
+    if (!a) return $('rumble-txt').textContent = 'Cette manette ou ce navigateur ne prend pas en charge les vibrations.';
+    try { await a.playEffect('dual-rumble', { duration: 400, strongMagnitude: 1, weakMagnitude: .6 }); $('rumble-txt').textContent = 'Vibration envoyée.'; } catch (_) { $('rumble-txt').textContent = 'Vibration refusée par le navigateur.'; }
+  };
+
+  /* démarrage : service worker (isolation + moteur local), puis téléchargement auto */
+  (async () => {
+    diag(); storage(); gpInfo();
+    try { const l = localStorage.getItem('nova.last'); if (l) $('tile-name').textContent = 'Charger un jeu (dernier : ' + l.replace(/\.[^.]+$/, '') + ')'; } catch (_) {}
+    if (!('serviceWorker' in navigator) || !location.protocol.startsWith('http')) { $('eng-txt').textContent = 'Ouvre l’appli depuis son adresse HTTPS (GitHub Pages).'; return; }
+    try {
+      await navigator.serviceWorker.register('sw.js'); await navigator.serviceWorker.ready;
+      if (!navigator.serviceWorker.controller && !sessionStorage.getItem('nova.rl')) { sessionStorage.setItem('nova.rl', '1'); location.reload(); return; }
+    } catch (_) { $('eng-txt').textContent = 'Service worker indisponible.'; return; }
+    diag();
+    if (!(await engState()) && S.auto && navigator.onLine) download().catch(() => {});
+  })();
+})();
+</script>
+</body>
+</html>
