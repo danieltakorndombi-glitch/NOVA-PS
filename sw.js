@@ -1,7 +1,7 @@
 // Nova PSP v3 — service worker
 // 1) Isolation cross-origin (COOP/COEP) : indispensable au moteur PSP (threads / SharedArrayBuffer).
 // 2) Le moteur EmulatorJS est servi depuis ./engine/ (même domaine), téléchargé une fois puis gardé en cache.
-const SHELL = 'nova-psp-shell-v4', ENGINE = 'nova-psp-engine';
+const SHELL = 'nova-psp-shell-v10', ENGINE = 'nova-psp-engine';
 const UP = 'https://cdn.emulatorjs.org/stable/data/';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 

@@ -1,4 +1,4 @@
-NOVA PSP v4
+NOVA PSP v10
 
 FICHIERS (tous à la racine du dépôt GitHub, sans sous-dossier)
 index.html, sw.js, manifest.webmanifest, icon-192.png, icon-512.png, apple-touch-icon.png
@@ -16,4 +16,4 @@ POURQUOI C'EST FIABLE
 LIMITES CONNUES
 - La documentation d'EmulatorJS indique que le cœur PSP n'est pas pris en charge sur Safari. Sur iPhone, il peut donc refuser de démarrer même si tout est vert. Sur Android (Chrome) ou ordinateur, c'est le cas normal.
 - Un jeu de 800 Mo à 1 Go est chargé en mémoire : ferme les autres applis.
-- Pour mettre à jour l'appli plus tard, change SHELL dans sw.js (nova-psp-shell-v4 -> v5).
+- Pour mettre à jour l'appli plus tard, change SHELL dans sw.js (nova-psp-shell-v10 -> v11).

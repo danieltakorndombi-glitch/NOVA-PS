@@ -95,6 +95,54 @@ button.pri{background:linear-gradient(160deg,rgba(130,180,255,.9),rgba(60,110,25
 #player .pb{background:rgba(6,10,24,.55);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
 @media(max-width:560px){.tabs button{padding:8px 11px;font-size:14px}.tabs .ic{display:none}.tabs button[aria-selected=true] .ic{display:block}}
 @media(prefers-reduced-motion:reduce){.bg i{animation:none}}
+#log{position:absolute;inset:46px 8px 8px;z-index:30;margin:0;padding:10px;background:rgba(6,10,24,.94);color:#cfe8ff;font:11px/1.45 ui-monospace,Menlo,monospace;overflow:auto;white-space:pre-wrap;border-radius:12px;border:1px solid rgba(255,255,255,.2)}
+
+/* ===== Manette virtuelle ===== */
+.ejs_virtualGamepad_parent{display:none!important}
+.vp{position:absolute;top:44px;left:0;right:0;bottom:0;z-index:12;pointer-events:none;touch-action:none}
+.vp.hide{display:none}
+.vc{position:absolute;pointer-events:auto;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;display:grid;place-items:center;color:#fff;font:700 15px system-ui,sans-serif;background:linear-gradient(180deg,#383d5a,#1a1d2f);box-shadow:0 5px 0 #0b0d19,0 10px 18px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.2);translate:var(--x,0px) var(--y,0px);transition:transform .05s,filter .05s}
+.vc.dn{transform:translateY(3px);filter:brightness(1.3);box-shadow:0 2px 0 #0b0d19,inset 0 1px 0 rgba(255,255,255,.12)}
+.sh{width:84px;height:44px;border-radius:14px}
+.dp{width:46px;height:46px;border-radius:12px}
+.fb{width:46px;height:46px;border-radius:50%}
+.vc svg{width:24px;height:24px}
+.pill{width:84px;height:32px;border-radius:999px;font-size:13px}
+.vtop{position:absolute;left:50%;top:4px;translate:-50% 0;display:flex;gap:6px;pointer-events:auto}
+.vtop button{padding:5px 12px;font-size:12px;border-radius:999px}
+.vp.adj .vc{outline:2px dashed #7db0ff;outline-offset:3px}
+#pvbox{position:relative;width:100%;border-radius:18px;overflow:hidden;background:radial-gradient(120% 100% at 50% 0,#10163a,#05070f);border:1px solid var(--line)}
+#pvin{position:absolute;left:0;top:0;width:720px;height:340px;transform-origin:0 0}
+#pvg,#tpg{position:absolute;left:220px;top:40px;width:280px;height:160px;border-radius:16px;background:#080c1e;border:1px solid rgba(255,255,255,.15)}
+.vp.pv{top:0}
+.vbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.vc{scale:var(--sc,1);opacity:var(--op,1)}.vc.vo{display:none}
+.vp.pv .vtop{display:none}
+#tp{position:fixed;inset:0;z-index:25;display:flex;flex-direction:column;background:radial-gradient(120% 90% at 50% 0,#141b46,#05070f);padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+#tp .pb{background:rgba(6,10,24,.55)}
+#tpbox{flex:1;position:relative;min-height:0;overflow:hidden}
+#tpin{position:absolute;left:50%;top:50%;width:720px;height:340px;transform-origin:center}
+#tpread{text-align:center;font-size:12px;color:var(--mu);min-height:18px;padding:4px}
+#tppanel{padding:8px 14px 12px;background:rgba(6,10,24,.7);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border-top:1px solid var(--line)}
+.chip{padding:5px 11px;font-size:12px;border-radius:999px}.chip.off{opacity:.45;text-decoration:line-through}
+#tppanel .set{padding:5px 0;border:0}
+.row2 .set{flex:1 1 150px;gap:10px}.row2 .set input{flex:1;min-width:0}
+@media(max-height:520px){#tppanel{padding:6px 12px}#tppanel .msg,#cend{display:none}#chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.chip{flex:none}.row2{flex-wrap:nowrap}}
+.stk{width:112px;height:112px;border-radius:50%;background:radial-gradient(circle,#10121f 55%,#1a1d2f);border:3px solid #2b2f4a;box-shadow:inset 0 0 22px #000,0 8px 18px rgba(0,0,0,.5)}
+.knob{width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#4c5275,#1f2238);box-shadow:0 5px 10px #000a;pointer-events:none}
+
+/* ===== Stabilité (test manette + jeu) : aucun zoom, aucun défilement, aucun saut de mise en page ===== */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+button,.chip,input{touch-action:manipulation}
+html.lock,html.lock body{overflow:hidden;overscroll-behavior:none;height:100%}
+#tp,#player{touch-action:none;overscroll-behavior:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+#tp input[type=range]{touch-action:pan-x}
+#tpread{flex:none;box-sizing:border-box;height:26px;min-height:0;line-height:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#pv-read{display:inline-block;max-width:60%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:bottom}
+#tp .pb button,#player .pb button{white-space:nowrap;flex:none}
+#tpin,#pvin{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.vc{transition:filter .05s}
+.vc.dn{transform:none;translate:var(--x,0px) calc(var(--y,0px) + 3px)}
 </style>
 </head>
 <body>
@@ -124,7 +172,7 @@ button.pri{background:linear-gradient(160deg,rgba(130,180,255,.9),rgba(60,110,25
     <section id="t-home">
       <div class="row">
         <button class="tw sel" id="tile-load"><div class="t"><svg class="ic"><use href="#i-plus"/></svg></div><span id="tile-name">Charger un jeu</span></button>
-        <button class="tw" data-go="pad"><div class="t"><svg class="ic"><use href="#i-pad"/></svg></div><span>Manette</span></button>
+        <button class="tw" id="tile-pad"><div class="t"><svg class="ic"><use href="#i-pad"/></svg></div><span>Test manette</span></button>
         <button class="tw" data-go="set"><div class="t"><svg class="ic"><use href="#i-sliders"/></svg></div><span>Réglages</span></button>
       </div>
       <p class="msg" id="msg">Choisis un fichier .iso, .cso ou .pbp (1 Go maximum conseillé).</p>
@@ -140,9 +188,13 @@ button.pri{background:linear-gradient(160deg,rgba(130,180,255,.9),rgba(60,110,25
 
     <section id="t-pad" class="hide">
       <div class="grid" style="margin-top:14px">
+        <div class="card" style="grid-column:1/-1"><h3><span class="hl"><svg class="ic"><use href="#i-pad"/></svg>Aperçu et test</span><span id="pv-read"></span></h3>
+          <div id="pvbox"><div id="pvin"><canvas id="pvg" width="280" height="160"></canvas></div></div>
+          <p>Touche les boutons : le point lumineux se déplace avec le stick ou la croix directionnelle, Croix l’accélère, Rond lance une onde, Carré change sa couleur, Triangle le recentre, L1 et R1 changent sa taille. Chaque appui vibre si la vibration est activée dans Réglages.</p>
+          <div class="vbs"><button class="pri" id="tpopen">Tester en plein écran</button><button data-vb="10">Vibration légère</button><button data-vb="35">Moyenne</button><button data-vb="80">Forte</button><button id="vburst">Rafale</button></div></div>
         <div class="card"><h3>Boutons <span id="pad-name" class="mu">aucune manette</span></h3><div class="pad" id="pad"></div></div>
         <div class="card"><h3>Sticks et gâchettes</h3><div class="ax" id="ax"></div>
-          <p style="margin-top:12px"><button id="rumble">Tester les vibrations</button></p><p id="rumble-txt"></p></div>
+          <p style="margin-top:12px"><button id="rumble">Tester les vibrations</button></p><button id="hapt">Tester la vibration tactile</button><p id="rumble-txt"></p></div>
       </div>
     </section>
 
@@ -153,6 +205,7 @@ button.pri{background:linear-gradient(160deg,rgba(130,180,255,.9),rgba(60,110,25
         <div class="set">Cœur processeur<select data-k="cpu"><option value="jit">JIT (rapide)</option><option value="IR jit">IR JIT</option><option value="interpreter">Interpréteur</option></select></div>
         <div class="set">Mise à l’échelle des textures<select data-k="tex"><option>1</option><option>2</option><option>3</option></select></div>
         <div class="set">Volume<input type="range" min="0" max="100" data-k="vol"></div>
+        <div class="set">Vibration des boutons<input type="checkbox" data-k="hap"></div>
         <div class="set">Télécharger le moteur automatiquement<input type="checkbox" data-k="auto"></div>
         <div class="set">Moteur en cache<button id="eng-reset">Supprimer et retélécharger</button></div>
       </div>
@@ -162,19 +215,40 @@ button.pri{background:linear-gradient(160deg,rgba(130,180,255,.9),rgba(60,110,25
   <input id="file" type="file" accept=".iso,.cso,.pbp,application/octet-stream" hidden>
 </div>
 
+<div id="tp" class="hide">
+  <div class="pb"><button id="tpx">‹ Fermer</button><b>Test de la manette</b><button id="tped">Personnaliser</button><button id="tpfs">Plein écran</button></div>
+  <div id="tpread"></div>
+  <div id="tpbox"><div id="tpin"><canvas id="tpg" width="280" height="160"></canvas></div></div>
+  <div id="tppanel" class="hide">
+    <div class="vbs" id="chips" style="margin:0 0 6px"></div>
+    <div class="vbs row2" style="margin:0;align-items:center">
+      <div class="set">Taille<input type="range" id="csz" min="70" max="140"></div>
+      <div class="set">Opacité<input type="range" id="cop" min="30" max="100"></div>
+      <button id="crst">Réinitialiser</button><button id="cend" class="pri">Terminer</button>
+    </div>
+    <p class="msg" style="margin:6px 0 0">Glisse un bouton pour le déplacer, touche un nom (Stick, L1, Croix…) pour le masquer ou le remettre.</p>
+  </div>
+</div>
+
 <div id="player" class="hide">
-  <div class="pb"><button id="back">‹ Retour</button><b id="pname"></b><button id="restart">Redémarrer</button><button id="fs">Plein écran</button></div>
+  <div class="pb"><button id="back">‹ Retour</button><b id="pname"></b><button id="vtog">Manette</button><button id="logb">Journal</button><button id="restart">Redémarrer</button><button id="fs">Plein écran</button></div>
   <div id="game"><div id="pmsg"></div></div>
+  <div id="vp" class="vp hide"><div class="vtop"><button id="vadj">Ajuster</button><button id="vrst">Réinitialiser</button><button id="vhide">Masquer</button></div></div>
+  <pre id="log" class="hide"></pre>
 </div>
 
 <script>
 (() => {
+  const LOG = [], lg = m => { LOG.push(((performance.now() / 1000) | 0) + 's ' + String(m).slice(0, 400)); if (LOG.length > 150) LOG.shift(); };
+  ['error', 'warn'].forEach(k => { const o = console[k]; console[k] = (...a) => { try { lg(k + ': ' + a.map(x => x && x.message ? x.message : String(x)).join(' ')); } catch (_) {} o.apply(console, a); }; });
+  addEventListener('error', e => lg('erreur: ' + e.message + ' @' + (e.filename || '').split('/').pop() + ':' + e.lineno));
+  addEventListener('unhandledrejection', e => lg('promesse rejetée: ' + (e.reason && e.reason.message || e.reason)));
   const $ = id => document.getElementById(id), qa = s => [...document.querySelectorAll(s)];
   const UP = 'https://cdn.emulatorjs.org/stable/data/', BASE = 'engine/', CORE = 'cores/ppsspp-thread-wasm.data';
   const REQ = ['loader.js', 'emulator.min.js', 'emulator.min.css', CORE];
   const OPT = ['version.json', 'cores/reports/ppsspp.json', 'compression/extract7z.js', 'compression/extractzip.js', 'compression/libunrar.js', 'compression/libunrar.wasm'];
   const MAX = 1024 * 1024 * 1024, EC = 'nova-psp-engine';
-  let S = { res: '480x272', skip: '0', cpu: 'jit', tex: '1', vol: 80, auto: true };
+  let S = { res: '480x272', skip: '0', cpu: 'jit', tex: '1', vol: 80, auto: true, hap: true };
   try { Object.assign(S, JSON.parse(localStorage.getItem('nova.s') || '{}')); } catch (_) {}
   const save = () => { try { localStorage.setItem('nova.s', JSON.stringify(S)); } catch (_) {} };
   let file = null, url = null, script = null, started = false, dlp = null, gpi = -1;
@@ -185,7 +259,7 @@ button.pri{background:linear-gradient(160deg,rgba(130,180,255,.9),rgba(60,110,25
   function tab(n) {
     qa('[data-t]').forEach(b => b.setAttribute('aria-selected', b.dataset.t === n));
     ['home', 'pad', 'set'].forEach(k => $('t-' + k).classList.toggle('hide', k !== n));
-    if (n === 'pad') loop();
+    if (n === 'pad') { loop(); mountPV(); startG(); }
   }
   qa('[data-t]').forEach(b => b.onclick = () => tab(b.dataset.t));
   qa('[data-go]').forEach(b => b.onclick = () => tab(b.dataset.go));
@@ -266,7 +340,7 @@ button.pri{background:linear-gradient(160deg,rgba(130,180,255,.9),rgba(60,110,25
     Object.keys(window).filter(k => k.startsWith('EJS_')).forEach(k => { try { delete window[k]; } catch (_) {} });
     started = false;
   }
-  function stop() { reset(); $('player').classList.add('hide'); say('Jeu arrêté.'); }
+  function stop() { reset(); $('vp').classList.add('hide'); $('player').classList.add('hide'); say('Jeu arrêté.'); }
 
   async function launch(f) {
     const ext = (f.name.match(/\.[^.]+$/) || [''])[0].toLowerCase();
@@ -278,7 +352,8 @@ button.pri{background:linear-gradient(160deg,rgba(130,180,255,.9),rgba(60,110,25
     $('tile-name').textContent = f.name.replace(/\.[^.]+$/, '');
     try { if (!(await has())) { say('Téléchargement du moteur…'); await download(); } } catch (_) { return; }
     reset();
-    $('player').classList.remove('hide'); $('pname').textContent = f.name + ' · ' + mo(f.size);
+    lg('UA: ' + navigator.userAgent); lg('isolé=' + window.crossOriginIsolated + ' SAB=' + (typeof SharedArrayBuffer) + ' coeurs=' + navigator.hardwareConcurrency + ' mémoire=' + (navigator.deviceMemory || '?') + ' fichier=' + mo(f.size));
+    $('player').classList.remove('hide'); mountPlayer(); $('vp').classList.remove('hide'); $('pname').textContent = f.name + ' · ' + mo(f.size);
     say('Démarrage du jeu…');
     url = URL.createObjectURL(f);
     Object.assign(window, {
@@ -286,10 +361,10 @@ button.pri{background:linear-gradient(160deg,rgba(130,180,255,.9),rgba(60,110,25
       EJS_pathtodata: new URL(BASE, location.href).href, EJS_threads: true, EJS_startOnLoaded: true, EJS_language: 'fr',
       EJS_volume: S.vol / 100, EJS_color: '#5b9dff',
       EJS_defaultOptions: { ppsspp_internal_resolution: S.res, ppsspp_frameskip: S.skip, ppsspp_cpu_core: S.cpu, ppsspp_texture_scaling_level: S.tex },
-      EJS_onGameStart: () => { started = true; $('pmsg').textContent = ''; },
+      EJS_onGameStart: () => { lg('EJS: jeu démarré'); setTimeout(() => { const c = document.querySelector('#game canvas'); lg('canvas: ' + (c ? c.width + 'x' + c.height : 'aucun')); }, 8000); started = true; $('pmsg').textContent = ''; },
       EJS_onGameStop: () => say('Le moteur a arrêté le jeu.', true)
     });
-    script = document.createElement('script'); script.async = true; script.src = BASE + 'loader.js';
+    script = document.createElement('script'); script.async = true; script.src = BASE + 'loader.js'; script.onload = () => lg('loader.js chargé');
     script.onerror = () => { say('Moteur introuvable. Retourne à l’accueil et retélécharge-le.', true); };
     document.head.appendChild(script);
     setTimeout(() => { if (!started && !$('player').classList.contains('hide')) say('Le démarrage est long. Si rien ne s’affiche, retourne à l’accueil, ferme les autres applications et relance.', true); }, 120000);
@@ -298,6 +373,8 @@ button.pri{background:linear-gradient(160deg,rgba(130,180,255,.9),rgba(60,110,25
   $('tile-load').onclick = pick;
   $('file').onchange = e => { const f = e.target.files[0]; if (f) launch(f); e.target.value = ''; };
   $('back').onclick = stop;
+  $('logb').onclick = () => { const l = $('log'); l.classList.toggle('hide'); if (!l.classList.contains('hide')) l.textContent = 'Touche ce texte pour le copier.\n\n' + (LOG.join('\n') || '(vide)'); };
+  $('log').onclick = () => { try { navigator.clipboard.writeText(LOG.join('\n')); say('Journal copié.'); } catch (_) {} };
   $('restart').onclick = () => file && launch(file);
   $('fs').onclick = async () => { try { document.fullscreenElement ? await document.exitFullscreen() : await $('player').requestFullscreen(); } catch (_) { say('Plein écran indisponible ici : ajoute l’appli à l’écran d’accueil.', true); } };
   addEventListener('beforeunload', () => url && URL.revokeObjectURL(url));
@@ -328,6 +405,157 @@ button.pri{background:linear-gradient(160deg,rgba(130,180,255,.9),rgba(60,110,25
     if (!a) return $('rumble-txt').textContent = 'Cette manette ou ce navigateur ne prend pas en charge les vibrations.';
     try { await a.playEffect('dual-rumble', { duration: 400, strongMagnitude: 1, weakMagnitude: .6 }); $('rumble-txt').textContent = 'Vibration envoyée.'; } catch (_) { $('rumble-txt').textContent = 'Vibration refusée par le navigateur.'; }
   };
+
+
+  /* vibration (Android : API Vibration ; iPhone : interrupteur Safari, non vérifié sur ton modèle) */
+  let hx;
+  function buzz(ms) {
+    if (!S.hap) return;
+    if (navigator.vibrate) { navigator.vibrate(ms); return; }
+    try {
+      if (!hx) { const l = document.createElement('label'); l.style.display = 'none'; l.setAttribute('aria-hidden', 'true'); hx = document.createElement('input'); hx.type = 'checkbox'; hx.setAttribute('switch', ''); l.appendChild(hx); document.head.appendChild(l); hx.l = l; }
+      hx.l.click();
+    } catch (_) {}
+  }
+  $('hapt').onclick = () => { buzz(40); $('rumble-txt').textContent = S.hap ? 'Vibration envoyée (si ton appareil la prend en charge).' : 'La vibration est désactivée dans les réglages.'; };
+
+  /* manette virtuelle (avec stick analogique masquable) : indices libretro, Croix=0 Rond=8 Carré=1 Triangle=9 Select=2 Start=3 haut/bas/gauche/droite=4/5/6/7 L1=10 R1=11 L2=12 R2=13 */
+  const sv = (d, extra = '') => `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" ${extra}>${d}</svg>`;
+  const arr = r => sv('<path d="M12 6l7 11H5z" fill="#cfd6ff" stroke="none"/>', `style="transform:rotate(${r}deg)"`);
+  const TRI = sv('<path d="M12 4 21 19H3z"/>', 'stroke="#3ddc97"'), CIR = sv('<circle cx="12" cy="12" r="8"/>', 'stroke="#ff5a6e"'),
+        CRO = sv('<path d="M6 6l12 12M18 6 6 18"/>', 'stroke="#5b9dff"'), SQU = sv('<rect x="5" y="5" width="14" height="14" rx="1.5"/>', 'stroke="#ff8fd0"');
+  const VC = [['l2', 'sh', 'L2', 12, 'left:12px;top:6px'], ['l1', 'sh', 'L1', 10, 'left:12px;top:56px'], ['r2', 'sh', 'R2', 13, 'right:12px;top:6px'], ['r1', 'sh', 'R1', 11, 'right:12px;top:56px'],
+    ['du', 'dp', arr(0), 4, 'left:60px;bottom:118px'], ['dd', 'dp', arr(180), 5, 'left:60px;bottom:26px'], ['dl', 'dp', arr(-90), 6, 'left:14px;bottom:72px'], ['dr', 'dp', arr(90), 7, 'left:106px;bottom:72px'],
+    ['tr', 'fb', TRI, 9, 'right:60px;bottom:118px'], ['cr', 'fb', CRO, 0, 'right:60px;bottom:26px'], ['sq', 'fb', SQU, 1, 'right:106px;bottom:72px'], ['ci', 'fb', CIR, 8, 'right:14px;bottom:72px'],
+    ['se', 'pill', 'Select', 2, 'left:calc(50% - 78px);bottom:10px'], ['st', 'pill', 'Start', 3, 'left:calc(50% + 14px);bottom:10px']];
+  const LBL = { l2: 'L2', l1: 'L1', r2: 'R2', r1: 'R1', du: 'Haut', dd: 'Bas', dl: 'Gauche', dr: 'Droite', tr: 'Triangle', cr: 'Croix', sq: 'Carré', ci: 'Rond', se: 'Select', st: 'Start', stk: 'Stick' };
+  const vp = $('vp');
+  vp.insertAdjacentHTML('beforeend', VC.map(([id, c, h, i, pos]) => `<div class="vc ${c}" data-id="${id}" data-i="${i}" style="${pos}">${h}</div>`).join('') + '<div class="vc stk" id="stk" data-id="stk" style="left:164px;bottom:10px"><div class="knob"></div></div>');
+  const ld = (k, d) => { try { return Object.assign(d, JSON.parse(localStorage.getItem(k) || '{}')); } catch (_) { return d; } };
+  let VPS = ld('nova.vp', {}), CFG = ld('nova.vpc', { off: {}, sc: 1, op: 1 });
+  const sv2 = () => { try { localStorage.setItem('nova.vp', JSON.stringify(VPS)); localStorage.setItem('nova.vpc', JSON.stringify(CFG)); } catch (_) {} };
+  function applyVP() {
+    vp.style.setProperty('--sc', CFG.sc); vp.style.setProperty('--op', CFG.op);
+    vp.querySelectorAll('.vc').forEach(el => { const o = VPS[el.dataset.id] || { x: 0, y: 0 }; el.style.setProperty('--x', o.x + 'px'); el.style.setProperty('--y', o.y + 'px'); el.classList.toggle('vo', !!CFG.off[el.dataset.id]); });
+    qa('.chip').forEach(c => c.classList.toggle('off', !!CFG.off[c.dataset.c]));
+    $('csz').value = Math.round(CFG.sc * 100); $('cop').value = Math.round(CFG.op * 100);
+  }
+  let warned = false;
+  function press(i, v) {
+    if ($('player').classList.contains('hide')) { tin(i, v); return; }
+    try { const g = window.EJS_emulator && window.EJS_emulator.gameManager; if (g && g.simulateInput) { g.simulateInput(0, i, v); return; } } catch (e) { lg('simulateInput : ' + e.message); }
+    if (!warned) { warned = true; lg('Commandes tactiles : moteur pas encore prêt (simulateInput indisponible)'); }
+  }
+  const act = new Map(); let adj = false, drag = null;
+  vp.addEventListener('pointerdown', e => {
+    const el = e.target.closest('.vc'); if (!el) return;
+    e.preventDefault(); el.setPointerCapture(e.pointerId);
+    if (adj) { const o = VPS[el.dataset.id] || { x: 0, y: 0 }, k = vp.getBoundingClientRect().width / vp.offsetWidth || 1; drag = { id: e.pointerId, el, k, sx: e.clientX / k - o.x, sy: e.clientY / k - o.y }; return; }
+    act.set(e.pointerId, el); buzz(el.id === 'stk' ? 8 : 12);
+    if (el.id === 'stk') sm(e); else { el.classList.add('dn'); press(+el.dataset.i, 1); }
+  });
+  function sm(e) {
+    const st = $('stk'), r = st.getBoundingClientRect(), k = r.width / st.offsetWidth || 1, R = r.width / 2 - 8 * k;
+    let dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2); const d = Math.hypot(dx, dy);
+    if (d > R) { dx *= R / d; dy *= R / d; }
+    st.firstChild.style.transform = `translate(${dx / k}px,${dy / k}px)`;
+    const X = dx / R, Y = dy / R, m = 32767;
+    press(16, X > 0 ? Math.round(X * m) : 0); press(17, X < 0 ? Math.round(-X * m) : 0); press(18, Y > 0 ? Math.round(Y * m) : 0); press(19, Y < 0 ? Math.round(-Y * m) : 0);
+  }
+  vp.addEventListener('pointermove', e => { if (drag && drag.id === e.pointerId) { VPS[drag.el.dataset.id] = { x: Math.round(e.clientX / drag.k - drag.sx), y: Math.round(e.clientY / drag.k - drag.sy) }; applyVP(); return; } const el = act.get(e.pointerId); if (el && el.id === 'stk') sm(e); });
+  const end = e => {
+    if (drag && drag.id === e.pointerId) { drag = null; sv2(); return; }
+    const el = act.get(e.pointerId); if (!el) return; act.delete(e.pointerId);
+    if (el.id === 'stk') { el.firstChild.style.transform = ''; [16, 17, 18, 19].forEach(i => press(i, 0)); } else { el.classList.remove('dn'); press(+el.dataset.i, 0); }
+  };
+  vp.addEventListener('pointerup', end); vp.addEventListener('pointercancel', end);
+  const resetVP = () => { VPS = {}; CFG = { off: {}, sc: 1, op: 1 }; sv2(); applyVP(); };
+  $('vadj').onclick = () => { adj = !adj; vp.classList.toggle('adj', adj); $('vadj').textContent = adj ? 'Terminer' : 'Ajuster'; };
+  $('vrst').onclick = resetVP;
+  $('vhide').onclick = () => vp.classList.add('hide');
+  $('vtog').onclick = () => vp.classList.toggle('hide');
+
+  /* personnalisation (panneau du test plein écran) */
+  $('chips').innerHTML = Object.keys(LBL).map(k => `<button class="chip" data-c="${k}">${LBL[k]}</button>`).join('');
+  qa('.chip').forEach(c => c.onclick = () => { const k = c.dataset.c; if (CFG.off[k]) delete CFG.off[k]; else CFG.off[k] = 1; sv2(); applyVP(); });
+  $('csz').oninput = () => { CFG.sc = +$('csz').value / 100; sv2(); applyVP(); };
+  $('cop').oninput = () => { CFG.op = +$('cop').value / 100; sv2(); applyVP(); };
+  $('crst').onclick = resetVP;
+  applyVP();
+  function edit(on) {
+    adj = on; vp.classList.toggle('adj', on); $('tppanel').classList.toggle('hide', !on); $('tped').textContent = on ? 'Terminer' : 'Personnaliser';
+    requestAnimationFrame(fit);
+  }
+  $('tped').onclick = () => edit(!adj); $('cend').onclick = () => edit(false);
+
+  /* aperçu (onglet Manette) et test plein écran */
+  const NM = { 0: 'Croix', 1: 'Carré', 2: 'Select', 3: 'Start', 4: 'Haut', 5: 'Bas', 6: 'Gauche', 7: 'Droite', 8: 'Rond', 9: 'Triangle', 10: 'L1', 11: 'R1', 12: 'L2', 13: 'R2' };
+  const T = new Set(), AX = [0, 0, 0, 0], G = { x: 140, y: 80, r: 9, h: 200, p: [] };
+  const tpOn = () => !$('tp').classList.contains('hide');
+  let lw = 0, lh = 0;
+  function fit() {
+    if (tpOn()) { const b = $('tpbox'), s = Math.floor(Math.min(1.8, b.clientWidth / 720, b.clientHeight / 340) * 100) / 100; lw = b.clientWidth; lh = b.clientHeight; if (s > 0) $('tpin').style.transform = `translate(-50%,-50%) scale(${s})`; }
+    const w = $('pvbox').clientWidth; if (w > 0) { const s = Math.floor(Math.min(1.3, w / 720) * 100) / 100; $('pvin').style.transform = `scale(${s})`; $('pvbox').style.height = Math.round(340 * s) + 'px'; }
+  }
+  const mountTo = el => { vp.classList.add('pv'); vp.classList.remove('hide'); el.appendChild(vp); fit(); };
+  const mountPV = () => mountTo($('pvin'));
+  function mountPlayer() { vp.classList.remove('pv'); $('player').insertBefore(vp, $('log')); }
+  let ft = 0;
+  const fitSoon = () => { clearTimeout(ft); ft = setTimeout(() => { if (tpOn()) { const b = $('tpbox'); if (Math.abs(b.clientWidth - lw) < 3 && Math.abs(b.clientHeight - lh) < 3) return; } fit(); }, 160); };
+  addEventListener('resize', fitSoon); addEventListener('orientationchange', fitSoon);
+
+  /* verrou anti-zoom : actif seulement pendant le test plein écran et pendant le jeu */
+  const vmeta = document.querySelector('meta[name=viewport]'), VP_OPEN = vmeta.content, VP_LOCK = VP_OPEN + ',minimum-scale=1,maximum-scale=1,user-scalable=no';
+  let locked = false;
+  const syncLock = () => {
+    const on = !$('tp').classList.contains('hide') || !$('player').classList.contains('hide');
+    if (on === locked) return; locked = on;
+    vmeta.setAttribute('content', on ? VP_LOCK : VP_OPEN);
+    document.documentElement.classList.toggle('lock', on);
+    if (on) scrollTo(0, 0);
+  };
+  ['tp', 'player'].forEach(id => new MutationObserver(syncLock).observe($(id), { attributes: true, attributeFilter: ['class'] }));
+  const noDef = e => { if (locked) e.preventDefault(); };
+  ['gesturestart', 'gesturechange', 'gestureend', 'dblclick', 'contextmenu'].forEach(n => document.addEventListener(n, noDef, { passive: false }));
+  document.addEventListener('touchmove', e => { if (locked && (e.touches.length > 1 || !e.target.closest('#tppanel'))) e.preventDefault(); }, { passive: false });
+  document.addEventListener('wheel', e => { if (locked && (e.ctrlKey || e.metaKey)) e.preventDefault(); }, { passive: false });
+  document.addEventListener('keydown', e => { if (locked && (e.ctrlKey || e.metaKey) && ['+', '-', '=', '_', '0'].includes(e.key)) e.preventDefault(); });
+  function tpOpen() { $('tp').classList.remove('hide'); mountTo($('tpin')); startG(); }
+  function tpClose() { edit(false); $('tp').classList.add('hide'); if (!$('t-pad').classList.contains('hide')) mountPV(); try { if (document.fullscreenElement) document.exitFullscreen(); } catch (_) {} }
+  $('tile-pad').onclick = tpOpen; $('tpopen').onclick = tpOpen; $('tpx').onclick = tpClose;
+  $('tpfs').onclick = async () => { try { await $('tp').requestFullscreen(); try { await screen.orientation.lock('landscape'); } catch (_) {} } catch (_) { $('tpread').textContent = 'Plein écran du navigateur indisponible ici : l’aperçu occupe déjà tout l’écran.'; } };
+  function tin(i, v) {
+    if (i >= 16) AX[i - 16] = v / 32767;
+    else if (v) {
+      T.add(i);
+      if (i === 8) G.p.push({ r: G.r, a: 1 });
+      if (i === 1) G.h = (G.h + 70) % 360;
+      if (i === 9) { G.x = 140; G.y = 80; }
+      if (i === 10) G.r = Math.max(5, G.r - 2);
+      if (i === 11) G.r = Math.min(22, G.r + 2);
+    } else T.delete(i);
+    const n = [...T].map(x => NM[x]).filter(Boolean).join(' + ') || 'aucun bouton', sx = AX[0] - AX[1], sy = AX[2] - AX[3], txt = n + ((sx || sy) ? ' · stick ' + sx.toFixed(2) + ' / ' + sy.toFixed(2) : '');
+    $('pv-read').textContent = txt; $('tpread').textContent = txt;
+  }
+  let gon = false;
+  function startG() { if (!gon) { gon = true; gtick(); } }
+  function gtick() {
+    if ((!tpOn() && $('t-pad').classList.contains('hide')) || !$('player').classList.contains('hide')) { gon = false; return; }
+    const W = 280, H = 160, b = T, ax = (b.has(7) ? 1 : 0) - (b.has(6) ? 1 : 0) + AX[0] - AX[1], ay = (b.has(5) ? 1 : 0) - (b.has(4) ? 1 : 0) + AX[2] - AX[3], sp = b.has(0) ? 5 : 2.4;
+    G.x = Math.max(G.r, Math.min(W - G.r, G.x + Math.max(-1, Math.min(1, ax)) * sp)); G.y = Math.max(G.r, Math.min(H - G.r, G.y + Math.max(-1, Math.min(1, ay)) * sp));
+    G.p = G.p.filter(q => q.a > .02); G.p.forEach(q => { q.r += 3; q.a *= .93; });
+    [$('pvg'), $('tpg')].forEach(cv => {
+      if (!cv.getClientRects().length) return;
+      const c = cv.getContext('2d'); c.fillStyle = 'rgba(8,12,30,.25)'; c.fillRect(0, 0, W, H);
+      G.p.forEach(q => { c.strokeStyle = `hsla(${G.h},90%,70%,${q.a})`; c.lineWidth = 2; c.beginPath(); c.arc(G.x, G.y, q.r, 0, 6.3); c.stroke(); });
+      const g = c.createRadialGradient(G.x, G.y, 1, G.x, G.y, G.r * 2.4); g.addColorStop(0, `hsl(${G.h},95%,75%)`); g.addColorStop(1, `hsla(${G.h},95%,60%,0)`);
+      c.fillStyle = g; c.beginPath(); c.arc(G.x, G.y, G.r * 2.4, 0, 6.3); c.fill();
+      c.fillStyle = `hsl(${G.h},95%,82%)`; c.beginPath(); c.arc(G.x, G.y, G.r, 0, 6.3); c.fill();
+    });
+    requestAnimationFrame(gtick);
+  }
+  qa('[data-vb]').forEach(el => el.onclick = () => buzz(+el.dataset.vb));
+  $('vburst').onclick = () => { if (!S.hap) return; if (navigator.vibrate) navigator.vibrate([25, 45, 25, 45, 70]); else [0, 70, 140].forEach(t => setTimeout(() => buzz(20), t)); };
 
   /* démarrage : service worker (isolation + moteur local), puis téléchargement auto */
   (async () => {
